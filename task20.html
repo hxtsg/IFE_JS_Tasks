@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .redBlock
+        {
+            height:30px;
+            min-width: 30px;
+            border: 1px dashed gray;
+            display:inline-block;
+            margin:10px;
+        }
+        .display
+        {
+            overflow: hidden;
+            zoom: 1;
+            border: 1px solid #d3d3d3;
+            height: 120px;
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <textarea id = "input-text" rows="5" cols="20"></textarea>
+        <input type = "button" id = "insert" value = "插入" />
+        <input type = "button" id = "search" value = "查询"/>
+        <input id = "search-text" type = "text" />
+    </form>
+    <div class = "display" id = "display-zone">
+
+    </div>
+    <script src = "task20.js"></script>
+</body>
+</html>

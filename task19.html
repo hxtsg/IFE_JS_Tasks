@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .redBlock
+        {
+            width:30px;
+            background-color: red;
+            display:inline-block;
+            margin:10px;
+        }
+        .display
+        {
+            overflow: hidden;
+            zoom: 1;
+            border: 1px solid #d3d3d3;
+            height: 120px;
+            width: 100%;
+            display: flex;
+            align-items: flex-end;
+
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <input type = "text" id = "input-text" style = "width:100px" />
+        <input name = "btn_click" type = "button" id = "left-in" value = "左边进" />
+        <input name = "btn_click" type = "button" id = "right-in" value = "右边进"/>
+        <input name = "btn_click" type = "button" id = "left-out" value = "左边出"/>
+        <input name = "btn_click" type = "button" id = "right-out" value = "右边出"/>
+        <input id = "sort" type = "button" value = "排序" />
+    </form>
+    <div class = "display" id = "display-zone">
+
+    </div>
+    <script src = "task19.js"></script>
+</body>
+</html>
