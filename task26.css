@@ -1,0 +1,68 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+.main-wrapper
+{
+    width:1000px;
+    height: 750px;
+    margin: auto;
+    border: 2px solid #000000;
+    position: relative;
+}
+
+
+.console-log{
+    height: 1000px;
+    width: 250px;
+    display: inline-block;
+}
+
+.console-log span
+{
+    font-family: 微软雅黑;
+    font-size: 20px;
+    margin-left: 25%;
+}
+
+.console-log ul li
+{
+    margin-left: 10%;
+}
+
+
+.screen{
+    width: 600px;
+    height: 600px;
+    display: inline-block;
+    background-color: lightgrey;
+
+    position: absolute;
+    right: 0px;
+    top:0px;
+}
+.pannel{
+    position: absolute;
+    right: 0px;
+    bottom:0px;
+    width: 600px;
+    height:150px;
+}
+
+.pannel ul
+{
+    list-style: none;
+}
+
+.pannel fieldset
+{
+    padding: 0px 20px 0px 20px;
+    height: 50%;
+}
+
+.pannel button
+{
+    margin: 0px 10px 0 10px;
+    width: 50px;
+}
