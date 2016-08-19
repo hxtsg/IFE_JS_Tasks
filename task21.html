@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .area-style
+        {
+            display:block;
+        }
+        .block
+        {
+            margin:50px;
+        }
+        .input-block
+        {
+            height: 50px;
+        }
+        .redBlock
+        {
+            height:20px;
+            background-color: #81cfff;
+            color: #ffffff;
+
+            margin:10px;
+            padding:10px;
+            display:inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class = "block">
+        <span>Tag:</span>
+        <input id = "tag-input" />
+        <div class = "input-block" id = "display-block">
+
+        </div>
+    </div>
+    <div class = "block">
+        <textarea class="area-style" cols = "20" rows = "5" id = "habit-area"></textarea>
+        <input type = "button" id = "confirm_habits" value = "确认兴趣爱好" />
+        <div class = "input-block" id = "habits-display" >
+
+        </div>
+    </div>
+    <script src = "task21.js"></script>
+</body>
+</html>
