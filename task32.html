@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="task32.css" rel="stylesheet">
+    <title>Title</title>
+</head>
+<body>
+    <div class = "main-wrapper">
+        <div class = "choose-block" id = "choose">
+            <div class = "name-input">
+                <span>名称</span><input id = "name_input" />
+            </div>
+            <div class = "radio-input">
+                <span>类型</span>
+                <input type = "radio" name = "type" value = "name" checked = "checked" id ="checked_type" /><span>名称</span>
+                <input type = "radio" name = "type" value = "email"/><span>邮箱</span>
+                <input type = "radio" name = "type" value = "figure"/><span>数字</span>
+            </div>
+            <div class = "length-input">
+                <span>最短</span><input value = "4" id = "min_len" />
+                <span>最长</span><input value = "10" id = "max_len" />
+            </div>
+            <div class = "nec-input">
+                <input type = "radio" name = "necessary" value = "true" checked = "checked" id = "checked_nec" /><span>必填</span>
+                <input type = "radio" name = "necessary" value = "false" /><span>选填</span>
+            </div>
+            <div class = "submit-input" id = "add">
+                <input type = "button" value="提交" />
+            </div>
+        </div>
+        <div class = "input-block" id = "input_block">
+            <div class = "check-element">
+                <span>名称</span><input />
+                <div>请输入</div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src = "task32.js"></script>
+</body>
+</html>
