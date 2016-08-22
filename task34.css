@@ -1,0 +1,35 @@
+
+.main-wrapper
+{
+    width: 800px;
+    height: 800px;
+}
+
+.main-wrapper .grid
+{
+    width : 600px;
+    height: 600px;
+    border: 1px solid #000000;
+    position: relative;
+}
+
+.main-wrapper .grid .grid-element
+{
+    width:58px;
+    height: 58px;
+    border: 1px solid #979797;
+    display: inline-block;
+    float:left;
+}
+
+.main-wrapper .moving-block
+{
+    width: 60px;
+    height: 40px;
+    border-top: 20px solid blue;
+    display: inline-block;
+    background-color: red;
+    position: absolute;
+
+}
+
