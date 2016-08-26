@@ -1,8 +1,9 @@
 
 .main-wrapper
 {
-    width: 800px;
+    width: 1200px;
     height: 800px;
+    position: relative;
 }
 
 .main-wrapper .grid
@@ -11,6 +12,14 @@
     height: 600px;
     border: 1px solid #000000;
     position: relative;
+    display: inline-block;
+    float:left;
+}
+
+
+.main-wrapper .input-field{
+    width: 600px;
+    display: inline-block;
 }
 
 .main-wrapper .grid .grid-element
@@ -25,11 +34,72 @@
 .main-wrapper .moving-block
 {
     width: 60px;
-    height: 40px;
-    border-top: 20px solid blue;
+    height: 50px;
+    border-top: 10px solid blue;
     display: inline-block;
     background-color: red;
     position: absolute;
+    top:0px;
+    left:0px;
+    transition: null;
+    transform: rotate(0deg);
+}
 
+.main-wrapper .command-area
+{
+    width: 500px;
+    height: 500px;
+    border: 1px solid #000000;
+    float: right;
+    display: inline-block;
+    position: relative;
+    float:right;
+}
+
+.main-wrapper .command-area .ul-area
+{
+    display: inline-block;
+    background-color: lightgrey;
+    height: 100%;
+    width: 15%;
+}
+
+.main-wrapper .command-area .ul-area ul
+{
+    padding-left: 20px;
+    margin:5px 0 5px 0;
+}
+
+.main-wrapper .command-area .ul-area li
+{
+    list-style: none;
+    font-size: 20px;
+
+}
+
+
+.main-wrapper .command-area textarea
+{
+    height: 99%;
+    width:83%;
+    float: right;
+    line-height: 20px;
+    font-size: 20px;
+    line-height: 23px;
+    letter-spacing: 2px;
+    vertical-align: bottom;
+    rows:10;
+}
+
+.main-wrapper .command-area .veil
+{
+    width: 84%;
+    height: 27px;
+    display: inline-block;
+    background-color: #979797;
+    opacity: 0.2;
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
 
