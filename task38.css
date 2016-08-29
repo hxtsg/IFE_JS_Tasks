@@ -1,0 +1,42 @@
+table
+{
+    border-collapse: collapse;
+	border-bottom: 1px solid #666;
+    height: 300px;
+}
+
+
+
+
+tr.odd{
+		background: #fff;
+	}
+	tr.even{
+		background: #eee;
+}
+
+
+table th{
+    color: #333;
+    padding: 3px;
+    font-family: 微软雅黑;
+    text-align: center;
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #666;
+    border-left: none;
+    border-right: none;
+}
+table td{
+    padding: 3px;
+    border-top: 1px solid #ccc;
+    border-left: none;
+    border-right: none;
+}
+
+.input_btn
+{
+    width:20px;
+    height:20px;
+    float:right;
+    position: absolute;
+}

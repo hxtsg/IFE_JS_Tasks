@@ -38,11 +38,19 @@ HCIManager.prototype.DrawChartHead = function(){
     for( var i = 0 ; i < headArray.length ; i ++ ){
         var th_element = document.createElement('th');
         th_element.textContent = headArray[ i ];
-        var up_sort_btn = document.createElement('button');
+        var up_sort_btn = document.createElement('input');
         up_sort_btn.textContent = "up";
-
-        var down_sort_btn = document.createElement('button');
+        up_sort_btn.src = "up.jpg";
+        up_sort_btn.type = "image";
+        up_sort_btn.className = "input_btn";
+        up_sort_btn.style.top = "12px";
+        var down_sort_btn = document.createElement('input');
         down_sort_btn.textContent = "down";
+        down_sort_btn.src = "down.jpg";
+        down_sort_btn.type = "image";
+        down_sort_btn.className = "input_btn";
+        down_sort_btn.type.clear = "both";
+        down_sort_btn.style.top = "27px";
         th_element.appendChild( up_sort_btn );
         th_element.appendChild( down_sort_btn );
         up_sort_btn.addEventListener( "click",function( ev ){
