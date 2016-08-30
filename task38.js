@@ -27,6 +27,28 @@ var HCIManager = function( c ){
     };
 }
 
+HCIManager.prototype.Init = function(){
+    window.onscroll = function(){
+        var table_element = window.mainController.hciManager.htmlElements.table;
+        var tableTopPosition = table_element.offsetTop;
+        var windowTopPosition = document.documentElement.scrollTop || document.body.scrollTop;
+        var table_height = parseInt( getComputedStyle( table_element ).height );
+
+
+        if( windowTopPosition >= tableTopPosition && windowTopPosition <= tableTopPosition + table_height ){
+            table_element.childNodes[0].style.position = "fixed";
+            table_element.childNodes[0].style.top = "0px";
+
+        }
+        else{
+
+            table_element.childNodes[0].style.position = "static";
+
+        }
+    }
+}
+
+
 /*
 * @DrawChart：从chartmanager那里获得信息然后重新生成html
 * */
@@ -65,6 +87,7 @@ HCIManager.prototype.DrawChartHead = function(){
         tr_element.appendChild( th_element );
     }
     table.appendChild( tr_element );
+
 }
 
 HCIManager.prototype.DrawOneRow = function( rowIndex ){
@@ -163,6 +186,7 @@ window.onload = function(){
     mainController.Register( hciManager );
     mainController.Register( chartManager );
     window.mainController = mainController;
+    hciManager.Init();
     chartManager.Init(["first","second","third","forth"]);
     chartManager.PushNewRow( ["7","2","35","43"] );
     chartManager.PushNewRow( ["1","434","43","46"] );
@@ -170,7 +194,9 @@ window.onload = function(){
     chartManager.PushNewRow( ["3","2633","3r","4342"] );
     chartManager.PushNewRow( ["4","244","63","43"] );
     chartManager.PushNewRow( ["5","25","37","4"] );
+
  //   chartManager.Sort( "second" );
+    console.log( hciManager.htmlElements.table.childNodes[0] );
 }
 
 
