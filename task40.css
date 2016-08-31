@@ -13,3 +13,20 @@
     margin-top: -250px;
     margin-left: -400px;
 }
+
+#CaTable
+{
+    border-collapse: collapse;
+}
+
+#CaTable th
+{
+    border-left: none;
+    border-right: none;
+}
+
+#CaTable td
+{
+    border-left: none;
+    border-right: none;
+}
