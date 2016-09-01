@@ -2,31 +2,55 @@
     margin: 0px;
     padding:0px;
 }
-.main-wrapper
+.Calendar-wrapper
 {
-    width: 800px;
-    height: 500px;
-    border: 2px solid red;
+    width: 600px;
+    height: 300px;
+    border: 1px solid #acabac;
     position: absolute;
-    top:50%;
-    left:50%;
-    margin-top: -250px;
-    margin-left: -400px;
+    border-radius:10px;
+    top:20px;
+    left:20px;
+    font-family: 微软雅黑;
+}
+
+header
+{
+    margin-top: 20px;
+    margin-left: 60px;
+    width:100%;
+    font-weight: bold;
+}
+
+header #month-ahead
+{
+    position: absolute;
+    left: 20px;
+}
+header #month-forward
+{
+    position: absolute;
+    right:20px;
 }
 
 #CaTable
 {
     border-collapse: collapse;
+    position: absolute;
+    left:100px;
+    top:100px;
 }
 
 #CaTable th
 {
     border-left: none;
     border-right: none;
+    text-align: center;
 }
 
 #CaTable td
 {
     border-left: none;
     border-right: none;
+    text-align: center;
 }
