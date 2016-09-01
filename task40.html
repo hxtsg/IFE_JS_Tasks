@@ -3,26 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <link href="task40.css" rel = "stylesheet">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+
 </head>
 <body>
-    <div class = "main-wrapper">
+    <div class = "Calendar-wrapper">
         <div id = "Calendar">
-            <div>
-                <input id = "month-ahead" type = "button" value = "ahead" />
-                <select id = "month-input">
+            <header>
+                <input id = "month-ahead" type = "image" src = "icons/left_arrow.ico" width = "4%" />
+                <div class = "col-xs-3">
+                    <select class="form-control" id = "month-input"></select>
+                </div>
 
-                </select>
-                <select id = "year-input">
 
-                </select>
-                <input id = "month-forward" type = "button" value = "forward" />
-            </div>
-            <table id = "CaTable" border="2">
+                <div class = "col-xs-3">
+                    <select class="form-control" id = "year-input">
+
+                    </select>
+                </div>
+                <input id = "month-forward" type = "image" src = "icons/right_arrow.ico" width = "4%" />
+            </header>
+            <table id = "CaTable" border="0" width="50%" height = "50%">
 
             </table>
         </div>
     </div>
 
 </body>
+<script src="jQuery/jquery-3.0.0.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
 <script src = "task40.js"></script>
 </html>
