@@ -100,19 +100,7 @@ UIManager.prototype.Draw = function(){
     return{
 
         DrawSelectedDay : function( target ){   // target就是被设置的那个element，设置这个elemetn的style，恢复上个element的style
-            var tab_arr = self.main.info.calendar_array;
-            var row = null;
-            var col = target.cellIndex;
-            if( target.parentNode.rowIndex == -1 ){
-                row = 5;
-            }
-            else{
-                row = target.parentNode.rowIndex - 1;
-            }
-            if( tab_arr[ row ][ col ][ 1 ] != 0 ){
-                console.log(false);
-                return;
-            }
+            
             target.setAttribute("class","chosen");
             target.style.color = "#ffffff";
             var inf = self.main.info;
@@ -150,20 +138,23 @@ UIManager.prototype.Draw = function(){
                 for( var j = 0 ; j < tab_arr[ i ].length ; j ++ ){
                     var td_element = document.createElement('td');
                     td_element.textContent = tab_arr[ i ][ j ][ 0 ];
-                    td_element.addEventListener( "click",function( ev ){
-                        window.mainController.ui.Draw().DrawSelectedDay( ev.target );
-                    } );
+
                     if( tab_arr[ i ][ j ][ 1 ] == 0 ){
                         td_element.style.color = "#000000";
-                        // td_element.click(function(){
-                        //     console.log("here");
-                        //     $("#calendar").toggle();
-                        // });
+                        td_element.addEventListener( "click",function( ev ){
+                            window.mainController.ui.Draw().DrawSelectedDay( ev.target );
+                        } );
                     }
-                    else{       // 这就表示是灰色的那些，往前或者往后，具体由表格中的值来确定
+                    else if( tab_arr[ i ][ j ][ 1 ] == -1 ){       // 这就表示是灰色的那些，往前或者往后，具体由表格中的值来确定
                         td_element.style.color = "#979797";
                         td_element.addEventListener( "click",function( ev ){
-                            window.mainController.ui.MoveMonthEventHandler( tab_arr[ ev.target.parentNode.rowIndex - 1 ][ ev.target.cellIndex ][ 1 ] );
+                            window.mainController.ui.MoveMonthEventHandler( -1 );
+                        } );
+                    }
+                    else if( tab_arr[ i ][ j ][ 1 ] == 1 ){
+                        td_element.style.color = "#979797";
+                        td_element.addEventListener( "click",function( ev ){
+                            window.mainController.ui.MoveMonthEventHandler( 1 );
                         } );
                     }
 

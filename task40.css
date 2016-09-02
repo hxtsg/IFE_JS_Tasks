@@ -2,16 +2,35 @@
     margin: 0px;
     padding:0px;
 }
-.Calendar-wrapper
+
+#title-wrapper
+{
+    position: absolute;
+    top:15px;
+    left:20px;
+}
+
+#calendar-button
+{
+    width:33px;
+    padding:5px;
+}
+
+#Calendar-Wrapper
+{
+    position: absolute;
+
+}
+
+.Calendar
 {
     width: 300px;
     height: 300px;
     border: 1px solid #acabac;
-
     position: absolute;
     border-radius:10px;
-    top:20px;
-    left:20px;
+    top:50px;
+    left:50px;
     font-family: 微软雅黑;
 }
 
