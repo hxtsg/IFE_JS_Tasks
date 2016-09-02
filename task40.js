@@ -87,6 +87,32 @@ UIManager.prototype.AddEventHandler = function(){
 UIManager.prototype.Draw = function(){
     var self = this;
     return{
+
+        DrawSelectedDay : function( target ){   // target就是被设置的那个element，设置这个elemetn的style，恢复上个element的style
+            var tab_arr = self.main.info.calendar_array;
+            var row = null;
+            var col = target.cellIndex;
+            if( target.parentNode.rowIndex == -1 ){
+                row = 5;
+            }
+            else{
+                row = target.parentNode.rowIndex - 1;
+            }
+            if( tab_arr[ row ][ col ][ 1 ] != 0 ){
+                console.log(false);
+                return;
+            }
+            target.setAttribute("class","chosen");
+            target.style.color = "#ffffff";
+            var inf = self.main.info;
+            inf.day_selected = target.textContent;
+            console.log( inf.year_selected + " " + inf.month_selected + " " + inf.day_selected );
+            if( self.lastClick != null ){
+                self.lastClick.setAttribute("class","not-chosen");
+                self.lastClick.style.color = "#000000";
+            }
+            self.lastClick = target;
+        },
         DrawTable:function(){
             self.htmlElements.CaTable.innerHTML = "";
             self.Draw().DrawHead();
@@ -112,6 +138,9 @@ UIManager.prototype.Draw = function(){
                 for( var j = 0 ; j < tab_arr[ i ].length ; j ++ ){
                     var td_element = document.createElement('td');
                     td_element.textContent = tab_arr[ i ][ j ][ 0 ];
+                    td_element.addEventListener( "click",function( ev ){
+                        window.mainController.ui.Draw().DrawSelectedDay( ev.target );
+                    } );
                     if( tab_arr[ i ][ j ][ 1 ] == 0 ){
                         td_element.style.color = "#000000";
                     }
@@ -122,26 +151,7 @@ UIManager.prototype.Draw = function(){
                         } );
                     }
 
-                    td_element.addEventListener( "click",function( ev ){
 
-                        var tab_arr = window.mainController.info.calendar_array;
-                        if( tab_arr[ (ev.target.parentNode.rowIndex + 6)%6 - 1 ][ ev.target.cellIndex ][ 1 ] != 0 ){
-                            console.log(false);
-                            return;
-                        }
-                        ev.target.setAttribute("class","chosen");
-                        ev.target.style.color = "#ffffff";
-                        var inf = window.mainController.info;
-                        inf.day_selected = ev.target.textContent;
-                        console.log( inf.year_selected + " " + inf.month_selected + " " + inf.day_selected );
-                        if( self.lastClick != null ){
-                            self.lastClick.setAttribute("class","not-chosen");
-                            self.lastClick.style.color = "#000000";
-                        }
-
-                        self.lastClick = ev.target;
-
-                    } );
                     tr_element.appendChild( td_element );
                 }
                 self.htmlElements.CaTable.appendChild( tr_element );
@@ -228,6 +238,17 @@ CalendarInfo.prototype.PushIntoCalendarArray = function( r, c, day, active ){
     this.calendar_array[ r ][ c ][ 1 ] = active;
 }
 
+CalendarInfo.prototype.Date2Index = function(){  //获得当前的类里面的selected的日期，返回在ui的那个table里面，是第几行，第几列
+    for( var i = 0 ; i < 6 ; i ++ ){
+        for( var j = 0 ; j < 7 ; j ++ ){
+            if( this.calendar_array[ i ][ j ][ 0 ] == this.day_selected
+                && this.calendar_array[ i ][ j ][ 1 ] == 0 ){
+                return{ row : i, col: j };
+            }
+        }
+    }
+}
+
 
 CalendarInfo.prototype.UpdateCalendarArray = function(){  // when the date selected is updated, the array is updated accordingly
     var curDate = new Date( this.year_selected + "/" + this.month_selected + "/" + 1 );
@@ -277,8 +298,18 @@ CalendarInfo.prototype.UpdateCalendarArray = function(){  // when the date selec
 
 }
 
-CalendarInfo.prototype.SetSelectedDate = function( startDate, endDate ){
+CalendarInfo.prototype.SetSelectedDate = function( selected_date ){
 
+    var date = new Date(selected_date);
+    this.year_selected = date.getFullYear();
+    this.month_selected = date.getMonth() + 1;
+    this.day_selected = date.getDate();
+    this.main.ui.Draw().DrawTable();
+    this.main.ui.Draw().DrawSelection();
+    var index_object = this.Date2Index();
+    var table_htmlElement = this.main.ui.htmlElements.CaTable;
+    var target = table_htmlElement.childNodes[ index_object.row + 1 ].childNodes[ index_object.col ];
+    this.main.ui.Draw().DrawSelectedDay( target );
 }
 
 CalendarInfo.prototype.SetBoundary = function( start_date_in_txt, end_date_in_txt ){
@@ -298,6 +329,7 @@ window.onload = function(){
     mainController.Register( info );
     info.Init();
     ui.Init();
+    info.SetSelectedDate("2016-8-17");
 }
 
 
