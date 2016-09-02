@@ -1,10 +1,10 @@
 /**
  * Created by 鑫 on 2016/8/30.
  */
-var $ = function(id)
-{
-    return document.querySelector(id);
-}
+// var $ = function(id)
+// {
+//     return document.querySelector(id);
+// }
 
 var MainController = function()
 {
@@ -25,12 +25,14 @@ var UIManager = function( c ){
     this.main = c;
 
     this.htmlElements = {
-        Calender:$("#Calender"),
-        month_ahead:$("#month-ahead"),
-        month_forward:$("#month-forward"),
-        month_input:$("#month-input"),
-        year_input:$("#year-input"),
-        CaTable :$("#CaTable")
+        calendar:document.querySelector("#calendar"),
+        month_ahead:document.querySelector("#month-ahead"),
+        month_forward:document.querySelector("#month-forward"),
+        month_input:document.querySelector("#month-input"),
+        year_input:document.querySelector("#year-input"),
+        CaTable :document.querySelector("#CaTable"),
+        calendar_btn:document.querySelector("#calendar-button"),
+        title_text:document.querySelector("#title-text")
     };
     this.headNames = [ "Su","Mo","Tu","We","Th","Fr","Sa" ];
     this.lastClick = null; // 表示上次点击的那个日期，用于选下个日期的时候把上个日期的style给改回来
@@ -41,7 +43,12 @@ UIManager.prototype.Init = function(){
     this.Draw().DrawTable();
     this.Draw().DrawSelectionOptions_Year();
     this.Draw().DrawSelectionOptions_Month();
+    this.InitCalendarTitle();
     this.AddEventHandler();
+}
+
+UIManager.prototype.InitCalendarTitle = function(){
+    $("#calendar").hide();
 }
 
 UIManager.prototype.MoveMonthEventHandler = function( increment ){
@@ -79,6 +86,10 @@ UIManager.prototype.AddEventHandler = function(){
         console.log( window.mainController.info.year_selected + " " + window.mainController.info.month_selected );
 
     });
+    $("#calendar-button").click( function(){
+        $("#calendar").toggle();
+    } );
+
 
 
 }
@@ -112,6 +123,7 @@ UIManager.prototype.Draw = function(){
                 self.lastClick.style.color = "#000000";
             }
             self.lastClick = target;
+            self.htmlElements.title_text.value= self.main.info.year_selected + "-" + self.main.info.month_selected + "-" + self.main.info.day_selected;
         },
         DrawTable:function(){
             self.htmlElements.CaTable.innerHTML = "";
@@ -143,6 +155,10 @@ UIManager.prototype.Draw = function(){
                     } );
                     if( tab_arr[ i ][ j ][ 1 ] == 0 ){
                         td_element.style.color = "#000000";
+                        // td_element.click(function(){
+                        //     console.log("here");
+                        //     $("#calendar").toggle();
+                        // });
                     }
                     else{       // 这就表示是灰色的那些，往前或者往后，具体由表格中的值来确定
                         td_element.style.color = "#979797";
