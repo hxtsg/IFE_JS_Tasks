@@ -4,9 +4,10 @@
 }
 .Calendar-wrapper
 {
-    width: 600px;
+    width: 300px;
     height: 300px;
     border: 1px solid #acabac;
+
     position: absolute;
     border-radius:10px;
     top:20px;
@@ -22,23 +23,36 @@ header
     font-weight: bold;
 }
 
+#month-div
+{
+    position: absolute;
+    left:25px;
+}
+#year-div
+{
+    position: absolute;
+    left:140px;
+}
+
 header #month-ahead
 {
     position: absolute;
-    left: 20px;
+    left: 10px;
+    top:25px;
 }
 header #month-forward
 {
     position: absolute;
-    right:20px;
+    right:15px;
+    top:25px;
 }
 
 #CaTable
 {
     border-collapse: collapse;
     position: absolute;
-    left:100px;
-    top:100px;
+    left:30px;
+    top:70px;
 }
 
 #CaTable th
@@ -46,6 +60,7 @@ header #month-forward
     border-left: none;
     border-right: none;
     text-align: center;
+    width:80px;
 }
 
 #CaTable td
@@ -53,4 +68,25 @@ header #month-forward
     border-left: none;
     border-right: none;
     text-align: center;
+    color:#000000;
+}
+#CaTable td:hover
+{
+    background-color: #307dc1;
+    border-radius: 4px;
+    color: #ffffff;
+}
+
+
+.chosen
+{
+    background-color: #307dc1;
+    border-radius: 4px;
+    color: #ffffff;
+}
+.not-chosen
+{
+    background-color: #ffffff;
+    border-radius: 0px;
+    color: #000000;
 }

@@ -34,6 +34,7 @@ var UIManager = function( c ){
     };
     this.headNames = [ "Su","Mo","Tu","We","Th","Fr","Sa" ];
     this.lastClick = null; // 表示上次点击的那个日期，用于选下个日期的时候把上个日期的style给改回来
+    this.disabledColor = "#979797";
 }
 
 UIManager.prototype.Init = function(){
@@ -41,6 +42,13 @@ UIManager.prototype.Init = function(){
     this.Draw().DrawSelectionOptions_Year();
     this.Draw().DrawSelectionOptions_Month();
     this.AddEventHandler();
+}
+
+UIManager.prototype.MoveMonthEventHandler = function( increment ){
+    window.mainController.info.MoveMonth( increment );
+    window.mainController.info.UpdateCalendarArray();
+    window.mainController.ui.Draw().DrawTable();
+    window.mainController.ui.Draw().DrawSelection();
 }
 
 UIManager.prototype.AddEventHandler = function(){
@@ -61,19 +69,13 @@ UIManager.prototype.AddEventHandler = function(){
     });
 
     this.htmlElements.month_ahead.addEventListener("click",function(){
-        window.mainController.info.MoveMonth( -1 );
-        window.mainController.info.UpdateCalendarArray();
-        window.mainController.ui.Draw().DrawTable();
-        window.mainController.ui.Draw().DrawSelection();
+        window.mainController.ui.MoveMonthEventHandler( -1 );
         console.log( window.mainController.info.year_selected + " " + window.mainController.info.month_selected );
 
 
     });
     this.htmlElements.month_forward.addEventListener("click",function(){
-        window.mainController.info.MoveMonth( 1 );
-        window.mainController.info.UpdateCalendarArray();
-        window.mainController.ui.Draw().DrawTable();
-        window.mainController.ui.Draw().DrawSelection();
+        window.mainController.ui.MoveMonthEventHandler( 1 );
         console.log( window.mainController.info.year_selected + " " + window.mainController.info.month_selected );
 
     });
@@ -110,18 +112,35 @@ UIManager.prototype.Draw = function(){
                 for( var j = 0 ; j < tab_arr[ i ].length ; j ++ ){
                     var td_element = document.createElement('td');
                     td_element.textContent = tab_arr[ i ][ j ][ 0 ];
-                    if( tab_arr[ i ][ j ][ 1 ] ){
+                    if( tab_arr[ i ][ j ][ 1 ] == 0 ){
                         td_element.style.color = "#000000";
                     }
-                    else{
+                    else{       // 这就表示是灰色的那些，往前或者往后，具体由表格中的值来确定
                         td_element.style.color = "#979797";
+                        td_element.addEventListener( "click",function( ev ){
+                            window.mainController.ui.MoveMonthEventHandler( tab_arr[ ev.target.parentNode.rowIndex - 1 ][ ev.target.cellIndex ][ 1 ] );
+                        } );
                     }
+
                     td_element.addEventListener( "click",function( ev ){
-                        ev.target.style.backgroundColor = "blue";
-                        if( self.lastClick != null ){
-                            self.lastClick.style.backgroundColor = "#ffffff";
+
+                        var tab_arr = window.mainController.info.calendar_array;
+                        if( tab_arr[ (ev.target.parentNode.rowIndex + 6)%6 - 1 ][ ev.target.cellIndex ][ 1 ] != 0 ){
+                            console.log(false);
+                            return;
                         }
+                        ev.target.setAttribute("class","chosen");
+                        ev.target.style.color = "#ffffff";
+                        var inf = window.mainController.info;
+                        inf.day_selected = ev.target.textContent;
+                        console.log( inf.year_selected + " " + inf.month_selected + " " + inf.day_selected );
+                        if( self.lastClick != null ){
+                            self.lastClick.setAttribute("class","not-chosen");
+                            self.lastClick.style.color = "#000000";
+                        }
+
                         self.lastClick = ev.target;
+
                     } );
                     tr_element.appendChild( td_element );
                 }
@@ -197,7 +216,7 @@ CalendarInfo.prototype.Init = function(){
     for( var i = 0 ; i < 6 ; i ++ ){
         var arr = new Array();
         for( var j = 0 ; j < 7 ; j ++ ){
-            arr.push( [ 0, false ] );
+            arr.push( [ 0, 0 ] );
         }
         this.calendar_array.push( arr );
     }
@@ -228,41 +247,32 @@ CalendarInfo.prototype.UpdateCalendarArray = function(){  // when the date selec
     var days_in_last_month = this.dayInMonths[ last_month - 1 ];
     var dayCnts = curRow == 0 ? curCol : 7 ;
 
-    try
-    {
-        for( var i = 0 ; i < dayCnts ; i ++ ){
-            this.PushIntoCalendarArray( 0, (curCol - 1 - i + 7) % 7, days_in_last_month - i, false );
-        }
+    //上月月末的几个日期
+    for( var i = 0 ; i < dayCnts ; i ++ ) {
+        this.PushIntoCalendarArray(0, (curCol - 1 - i + 7) % 7, days_in_last_month - i, -1);
+
     }
-    catch(e){
-        console.log("before");
+        // 本月的几个日期
+
+    for( var i = 1 ; i <= this.dayInMonths[ this.month_selected - 1 ] ; i ++ ){
+        this.PushIntoCalendarArray(curRow,curCol,i,0);
+        curRow += parseInt(( curCol + 1 ) / 7);
+        curCol = ( curCol + 1 ) % 7;
     }
 
-    try{
-        for( var i = 1 ; i <= this.dayInMonths[ this.month_selected - 1 ] ; i ++ ){
-            this.PushIntoCalendarArray(curRow,curCol,i,true);
-            curRow += parseInt(( curCol + 1 ) / 7);
-            curCol = ( curCol + 1 ) % 7;
-        }
-    }
-    catch(e){
-        console.log( curRow, curCol );
-    }
+
 
 
     // next month
     // get several early days in next month
-    try{
-        var dayCnt = 1;
+    var dayCnt = 1;
     while( curRow < this.RowCnt ){
-        this.PushIntoCalendarArray(curRow,curCol,dayCnt ++,false);
+        this.PushIntoCalendarArray(curRow,curCol,dayCnt ++,1);
         curRow += parseInt(( curCol + 1 ) / 7);
         curCol = ( curCol + 1 ) % 7;
     }
-    }
-    catch(e){
-        console.log("after");
-    }
+
+
 
 
 }
