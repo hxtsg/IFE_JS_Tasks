@@ -1,0 +1,9 @@
+.img-wrapper
+{
+    width:1000px;
+    height: 600px;
+    border:2px solid red;
+    position: relative;
+    left:50%;
+    margin-left: -500px;
+}
