@@ -100,7 +100,7 @@ UIManager.prototype.Draw = function(){
     return{
 
         DrawSelectedDay : function( target ){   // target就是被设置的那个element，设置这个elemetn的style，恢复上个element的style
-            
+
             target.setAttribute("class","chosen");
             target.style.color = "#ffffff";
             var inf = self.main.info;
@@ -112,6 +112,8 @@ UIManager.prototype.Draw = function(){
             }
             self.lastClick = target;
             self.htmlElements.title_text.value= self.main.info.year_selected + "-" + self.main.info.month_selected + "-" + self.main.info.day_selected;
+            self.main.info.SelectDateCallback();
+
         },
         DrawTable:function(){
             self.htmlElements.CaTable.innerHTML = "";
@@ -143,6 +145,7 @@ UIManager.prototype.Draw = function(){
                         td_element.style.color = "#000000";
                         td_element.addEventListener( "click",function( ev ){
                             window.mainController.ui.Draw().DrawSelectedDay( ev.target );
+                            $("#calendar").toggle();
                         } );
                     }
                     else if( tab_arr[ i ][ j ][ 1 ] == -1 ){       // 这就表示是灰色的那些，往前或者往后，具体由表格中的值来确定
@@ -196,6 +199,7 @@ var CalendarInfo = function( c ){
     this.dayInMonths = [ 31,28,31,30,31,30,31,31,30,31,30,31 ];
     this.RowCnt = 6;
     this.ColCnt = 7;
+    this.SelectDateCallback = function(){}; //这是设置日期或者点击日期之后的回调函数
 }
 CalendarInfo.prototype.MoveMonth = function( increment ){
     this.month_selected = parseInt( this.month_selected ) + parseInt(increment);
@@ -336,6 +340,10 @@ window.onload = function(){
     mainController.Register( info );
     info.Init();
     ui.Init();
+
+    info.SelectDateCallback = function(){
+        alert("Callback Function!");
+    };
     info.SetSelectedDate("2016-8-17");
 }
 
