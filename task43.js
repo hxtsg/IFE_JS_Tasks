@@ -30,7 +30,7 @@ MainController.prototype.Init = function(){
         [ { height:0.666 * height,width:0.666 * width }, { height:0.333*width,width:0.333 * width },{ height:height - 0.333*width,width:0.333 * width }, { height:0.333 * height,width:0.333 * width }, { height:0.333 * height,width:0.333 * width } ],
         [{ height:0.666 * height,width:0.666 * width }, { height:0.333 * height,width:0.333 * width },{ height:0.333 * height,width:0.333 * width },{ height:0.333 * height,width:0.333 * width },{ height:0.333 * height,width:0.333 * width },{ height:0.333 * height,width:0.333 * width }]
     ]; // 二维数组，i，j表示第i种布局里面第j张图片占位符的大小，在窗口resize的时候会改变
-    this.imgHolderOffset = [ //负数表示减去另一个边长的若干倍
+    this.imgHolderOffset = [
         [ { top:0,left:0 } ],
         [],
         [{ top:0,left:0 },{ top:0,left: width - 0.5 * height},{ top:0.5*height,left: width - 0.5 * height }],
@@ -45,10 +45,36 @@ MainController.prototype.run = function(){
     this.DrawImages();
 }
 
+MainController.prototype.DrawImgsOfTwo = function(){
+    var wrp = this.htmlElements.wrappers[ 1 ];
+
+    var imgElements = [];
+    for( var i = 0 ; i < 2 ; i ++ ){
+        var img_ele = document.createElement('img');
+        img_ele.src = this.imgPath[i];
+        img_ele.alt = 0 + " " + 0;
+        imgElements.push( img_ele );
+        img_ele.onload = function(){
+            window.controller.SetClipStyles( this );
+            if( this === imgElements[0] ){
+                this.style.webkitClipPath = "polygon( 0% 0%,  66.6% 0%, 33.3% 100%, 0% 100% )";
+            }
+            else{
+                this.style.webkitClipPath = "polygon( 66.6% 0%, 30% 100%, 100% 100%, 100% 0% )";
+
+            }
+
+        }
+        wrp.appendChild( img_ele );
+    }
+
+
+}
+
 MainController.prototype.DrawImages = function(){
     for( var i = 0 ; i < 6 ; i ++ ){
         if( i == 1 ){
-
+            this.DrawImgsOfTwo();
         }
         else{
             var wrp = this.htmlElements.wrappers[ i ];
