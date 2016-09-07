@@ -19,6 +19,9 @@ var MainController = function(){
 }
 
 MainController.prototype.Init = function(){
+    for( var i = 0 ; i < this.htmlElements.wrappers.length ; i ++ ){
+        this.htmlElements.wrappers[ i ].innerHTML = "";
+    }
     var height = parseInt(getComputedStyle(this.htmlElements.wrappers[0]).height.slice(0,-2));
     var width = parseInt(getComputedStyle(this.htmlElements.wrappers[0]).width.slice(0,-2));
 
@@ -32,7 +35,7 @@ MainController.prototype.Init = function(){
     ]; // 二维数组，i，j表示第i种布局里面第j张图片占位符的大小，在窗口resize的时候会改变
     this.imgHolderOffset = [
         [ { top:0,left:0 } ],
-        [],
+        [],//第二种特殊处理
         [{ top:0,left:0 },{ top:0,left: width - 0.5 * height},{ top:0.5*height,left: width - 0.5 * height }],
         [ { top:0,left:0 }, { top:0,left:0.5*width }, { top:0.5*height,left:0 }, { top:0.5*height,left:0.5*width } ],
         [ { top:0,left:0 }, { top:0,left:0.666*width },{ top:0.333*width,left:0.666 * width },{ top:0.666 * height,left:0.333*width },{ top:0.666*height,left:0 } ],
@@ -43,6 +46,10 @@ MainController.prototype.Init = function(){
 MainController.prototype.run = function(){
     this.Init();
     this.DrawImages();
+    window.onresize = function(){
+
+        window.controller.ResizeHandler();
+    }
 }
 
 MainController.prototype.DrawImgsOfTwo = function(){
@@ -102,57 +109,75 @@ MainController.prototype.SetClipStyles = function( element){  // 把elements按�
     var j = parseInt( alt_string[1] );
     var size = this.imgHolderSize[ i ][ j ];
     var offset = this.imgHolderOffset[ i ][ j ];
-    var ele_height = getComputedStyle(element).height.slice(0,-2);
-    var ele_width = getComputedStyle( element ).width.slice(0,-2);
+    var cur_height = parseInt(getComputedStyle(element).height.slice(0,-2));
+    var cur_width = parseInt(getComputedStyle( element ).width.slice(0,-2));
 
+    var styleHeight = parseInt( parseFloat( cur_height ) * size.height / parseFloat( cur_height ));
+    var styleWidth = parseInt( parseFloat( cur_width ) * size.height / parseFloat( cur_height ));
 
-    //parseInt(ele_height - size.height)
-    //parseInt( size.width - ele_width )
-
-
-    if( ele_height <= size.height && ele_width <= size.width ){
-        if(ele_height / size.height < ele_width / size.width){
-            element.style.height = size.height + "px";
-        }
-        else{
-            element.style.width = size.width+ "px";
-        }
-    }
-    else if( ele_height> size.height && ele_width < size.width ){
-        element.style.width = size.width+ "px";
-    }
-    else if( ele_height < size.height && ele_width > size.width ){
-        element.style.height = size.height+ "px";
-    }
-    else{
-        if(ele_height / size.height < ele_width / size.width){
-            element.style.width = size.width+ "px";
-        }
-        else{
-            element.style.height = size.height+ "px";
-        }
+    if( styleWidth < size.width ){
+        var factor = size.width / styleWidth;
+        styleWidth *= factor;
+        styleHeight *= factor;
     }
 
-    var curWidth = getComputedStyle( element ).width.slice(0,-2);
-    var curHeight = getComputedStyle( element ).height.slice(0,-2);
+    element.style.height = styleHeight + "px";
+    element.style.width = styleWidth + "px";
 
-    console.log( curWidth );
-//-webkit-clip-path:
-    console.log(curHeight);
+    // if( ele_height <= size.height && ele_width <= size.width ){
+    //     if(ele_height / size.height <= ele_width / size.width){
+    //         element.style.height = size.height + "px";
+    //     }
+    //     else{
+    //         element.style.width = size.width+ "px";
+    //     }
+    // }
+    // else if( ele_height>= size.height && ele_width <= size.width ){
+    //     element.style.width = size.width+ "px";
+    // }
+    // else if( ele_height <= size.height && ele_width >= size.width ){
+    //     element.style.height = size.height+ "px";
+    // }
+    // else{
+    //     if(ele_height / size.height <= ele_width / size.width){
+    //         element.style.width = size.width+ "px";
+    //     }
+    //     else{
+    //         element.style.height = size.height+ "px";
+    //     }
+    // }
+
+    var curWidth =  parseInt(getComputedStyle( element ).width.slice(0,-2));
+    var curHeight = parseInt(getComputedStyle( element ).height.slice(0,-2));
+
+    
+
+    var offsetH = parseInt(parseFloat(curHeight - size.height) / 2);
+    var offsetW = parseInt(parseFloat( curWidth - size.width ) / 2);
     element.style.webkitClipPath = "inset("+
-                    0 +"px "+
-                    parseInt( parseInt(curWidth ) -parseInt( size.width)  ) + "px " +
-                    parseInt( parseInt(curHeight) -  parseInt(size.height) ) +"px " +
-                    0 + "px)";
+                    offsetH +"px "+
+                    offsetW + "px " +
+                    offsetH +"px " +
+                    offsetW + "px)";
 
     element.style.position = "absolute";
-    element.style.top = offset.top + "px";
-    element.style.left = offset.left + "px";
+    element.style.top = offset.top+ "px";
+    element.style.left = offset.left+ "px";
+    element.style.top = offset.top -( curHeight - size.height - offsetH) + "px";
+    element.style.left = offset.left - ( curWidth - size.width - offsetW) + "px";
 
 }
 
-MainController.prototype.AddResizeHandler = function(){  // 当窗口大小变化的时候，进行调整
+MainController.prototype.ResizeHandler = function(){  // 当窗口大小变化的时候，进行调整
+    
+    for( var i = 0 ; i < this.htmlElements.wrappers.length ; i ++ ){
+        this.htmlElements.wrappers[ i ].style.width = document.documentElement.clientWidth * 0.8 + "px";
+        this.htmlElements.wrappers[ i ].style.height = document.documentElement.clientWidth * 0.8 * 0.6 + "px";
 
+    }
+    this.Init();
+    this.DrawImages();
+    console.log( parseFloat(this.htmlElements.wrappers[ 0 ].style.width.slice(0,-2)) / parseFloat(this.htmlElements.wrappers[ 0 ].style.height.slice(0,-2)) );
 }
 
 window.onload = function(){
