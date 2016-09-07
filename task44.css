@@ -1,0 +1,25 @@
+*{
+    margin: 0px;
+    padding:0px;
+}
+
+#fall-wrapper{
+    width:100%;
+}
+
+.fall-column
+{
+    float:left;
+    margin-left: 16px;
+    margin-right:16px;
+}
+
+.fall-column img
+{
+    display: block;
+}
+
+.fall-img{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
