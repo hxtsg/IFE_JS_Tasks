@@ -10,8 +10,8 @@
 .fall-column
 {
     float:left;
-    margin-left: 16px;
-    margin-right:16px;
+    margin-left: 8px;
+    margin-right:8px;
 }
 
 .fall-column img
@@ -22,4 +22,27 @@
 .fall-img{
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.black-veil
+{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background-color: #000000;
+    opacity: 0.8;
+}
+.blanket
+{
+    position:fixed;
+    width:100%;
+    height:100%;
+    opacity: 1;
+}
+
+.veil-img
+{
+    position: absolute;
+    top:50%;
+    left:50%;
 }
