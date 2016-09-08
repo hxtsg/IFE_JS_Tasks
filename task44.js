@@ -28,8 +28,8 @@ MainController.prototype.run = function(){
 
 MainController.prototype.Init = function(){
     this.htmlElements.innerHTML = "";
-    var wrapWidth = parseInt(getComputedStyle( this.htmlElements.mainWrapper ).width.slice(0,-2));
-    this.colWidth = parseInt( ( wrapWidth - (this.colNum + 1) * this.colInterval ) / this.colNum );
+    var wrapWidth = parseFloat(getComputedStyle( this.htmlElements.mainWrapper ).width.slice(0,-2));
+    this.colWidth = parseFloat( ( wrapWidth - this.colNum * this.colInterval * 2 ) / this.colNum );
     this.colHeightArray = [];
     this.htmlElements.colWrappers = [];
     for( var i = 0 ; i < this.colNum ; i ++ ){
