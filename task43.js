@@ -14,7 +14,8 @@ var MainController = function(){
     };  // 获取html当中的元素
     this.imgPath = ["img/1.jpg","img/2.jpg","img/3.jpg","img/4.jpg","img/5.jpg","img/6.jpg"];  // 表示这几张图片的位置和名字
     this.imgHolderSize = null;
-
+    this.ONETHIRD = 0.33333;
+    this.TWOTHIRDS = 0.66666;
     this.imgHolderOffset = null;  // 二维数组，i，j表示第i种布局的时候第j张图片对于top和left的偏移量
 }
 
@@ -27,23 +28,24 @@ MainController.prototype.Init = function(){
 
     this.imgHolderSize = [  //指示的图片是从左上角开始顺时针
         [{width:width,height:height}],
-        [],  //第二种特殊处理
+        [{width:width,height:height}],  //第二种特殊处理
         [{height:height,width:width-0.5*height},{ height:0.5*height,width:0.5*height },{ height:0.5*height,width:0.5*height }],
         [ { height:0.5 * height,width:0.5 * width },{ height:0.5 * height,width:0.5 * width },{ height:0.5 * height,width:0.5 * width },{ height:0.5 * height,width:0.5 * width } ],
-        [ { height:0.666 * height,width:0.666 * width }, { height:0.333*width,width:0.333 * width },{ height:height - 0.333*width,width:0.333 * width }, { height:0.333 * height,width:0.333 * width }, { height:0.333 * height,width:0.333 * width } ],
-        [{ height:0.666 * height,width:0.666 * width }, { height:0.333 * height,width:0.333 * width },{ height:0.333 * height,width:0.333 * width },{ height:0.333 * height,width:0.333 * width },{ height:0.333 * height,width:0.333 * width },{ height:0.333 * height,width:0.333 * width }]
+        [ { height:this.TWOTHIRDS * height,width:this.TWOTHIRDS * width }, { height:this.ONETHIRD*width,width:this.ONETHIRD * width },{ height:height - this.ONETHIRD*width,width:this.ONETHIRD * width }, { height:this.ONETHIRD * height,width:this.ONETHIRD * width }, { height:this.ONETHIRD * height,width:this.ONETHIRD * width } ],
+        [{ height:this.TWOTHIRDS * height,width:this.TWOTHIRDS * width }, { height:this.ONETHIRD * height,width:this.ONETHIRD * width },{ height:this.ONETHIRD * height,width:this.ONETHIRD * width },{ height:this.ONETHIRD * height,width:this.ONETHIRD * width },{ height:this.ONETHIRD * height,width:this.ONETHIRD * width },{ height:this.ONETHIRD * height,width:this.ONETHIRD * width }]
     ]; // 二维数组，i，j表示第i种布局里面第j张图片占位符的大小，在窗口resize的时候会改变
     this.imgHolderOffset = [
         [ { top:0,left:0 } ],
         [],//第二种特殊处理
         [{ top:0,left:0 },{ top:0,left: width - 0.5 * height},{ top:0.5*height,left: width - 0.5 * height }],
         [ { top:0,left:0 }, { top:0,left:0.5*width }, { top:0.5*height,left:0 }, { top:0.5*height,left:0.5*width } ],
-        [ { top:0,left:0 }, { top:0,left:0.666*width },{ top:0.333*width,left:0.666 * width },{ top:0.666 * height,left:0.333*width },{ top:0.666*height,left:0 } ],
-        [{ top:0,left:0 },{ top:0,left:0.666*width },{ top:0.333*height,left:0.666*width },{ top:0.666*height,left:0.666*width },{ top:0.666*height,left:0.333*width },{ top:0.666*height,left:0 }]
+        [ { top:0,left:0 }, { top:0,left:this.TWOTHIRDS*width },{ top:this.ONETHIRD*width,left:this.TWOTHIRDS * width },{ top:this.TWOTHIRDS * height,left:this.ONETHIRD*width },{ top:this.TWOTHIRDS*height,left:0 } ],
+        [{ top:0,left:0 },{ top:0,left:this.TWOTHIRDS*width },{ top:this.ONETHIRD*height,left:this.TWOTHIRDS*width },{ top:this.TWOTHIRDS*height,left:this.TWOTHIRDS*width },{ top:this.TWOTHIRDS*height,left:this.ONETHIRD*width },{ top:this.TWOTHIRDS*height,left:0 }]
     ];
 }
 
 MainController.prototype.run = function(){
+    window.controller = this;
     this.Init();
     this.DrawImages();
     window.onresize = function(){
@@ -63,12 +65,39 @@ MainController.prototype.DrawImgsOfTwo = function(){
         imgElements.push( img_ele );
         img_ele.onload = function(){
             window.controller.SetClipStyles( this );
+
+            var eleSize = window.controller.GetSize( this );
+            var wrapSize = window.controller.imgHolderSize[1][0];
+
+            var D = eleSize.width;
+            var d = wrapSize.width * window.controller.ONETHIRD;
+            var H = eleSize.height;
+            var h = wrapSize.height;
             if( this === imgElements[0] ){
-                this.style.webkitClipPath = "polygon( 0% 0%,  66.6% 0%, 33.3% 100%, 0% 100% )";
+
             }
             else{
-                this.style.webkitClipPath = "polygon( 66.6% 0%, 30% 100%, 100% 100%, 100% 0% )";
 
+
+                var x1 = ( D - d ) / 2;
+                var y1 = ( H - h ) / 2;
+
+                var x2 = ( D + d ) / 2;
+                var y2 = ( H - h ) / 2;
+
+                var x3 = ( D + d ) / 2;
+                var y3 = ( H + h ) / 2;
+
+                var x4 = 0;
+                var y4 = ( H + h ) / 2;
+
+                this.style.webkitClipPath = "polygon(" +
+                    (x1 / D)*100 + "% " + (y1 / H)*100 + "%," +
+                    (x2 / D)*100 + "% " + (y2 / H)*100 + "%," +
+                    (x3 / D)*100 + "% " + (y3 / H)*100 + "%," +
+                    (x4 / D)*100 + "% " + (y4 / H)*100 + "%" +
+                    ")";
+                this.style.left = parseInt(this.style.left.slice( 0,-2 )) + d + "px";
             }
 
         }
@@ -102,6 +131,17 @@ MainController.prototype.DrawImages = function(){
 
 }
 
+MainController.prototype.GetSize = function( element )
+{
+    var height = parseInt( getComputedStyle(element).height.slice(0,-2) );
+    var width = parseInt( getComputedStyle(element).width.slice(0,-2) );
+    return {
+        height:height,
+        width:width
+    };
+}
+
+
 MainController.prototype.SetClipStyles = function( element){  // 把elements按照i，j所示的样式clip
 
     var alt_string = element.alt.split(' ');
@@ -124,28 +164,6 @@ MainController.prototype.SetClipStyles = function( element){  // 把elements按�
     element.style.height = styleHeight + "px";
     element.style.width = styleWidth + "px";
 
-    // if( ele_height <= size.height && ele_width <= size.width ){
-    //     if(ele_height / size.height <= ele_width / size.width){
-    //         element.style.height = size.height + "px";
-    //     }
-    //     else{
-    //         element.style.width = size.width+ "px";
-    //     }
-    // }
-    // else if( ele_height>= size.height && ele_width <= size.width ){
-    //     element.style.width = size.width+ "px";
-    // }
-    // else if( ele_height <= size.height && ele_width >= size.width ){
-    //     element.style.height = size.height+ "px";
-    // }
-    // else{
-    //     if(ele_height / size.height <= ele_width / size.width){
-    //         element.style.width = size.width+ "px";
-    //     }
-    //     else{
-    //         element.style.height = size.height+ "px";
-    //     }
-    // }
 
     var curWidth =  parseInt(getComputedStyle( element ).width.slice(0,-2));
     var curHeight = parseInt(getComputedStyle( element ).height.slice(0,-2));
@@ -182,7 +200,7 @@ MainController.prototype.ResizeHandler = function(){  // 当窗口大小变化�
 
 window.onload = function(){
     var controller = new MainController();
-    window.controller = controller;
+
     controller.run();
 }
 
